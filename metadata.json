@@ -1,0 +1,8 @@
+{
+  "name": "Shimazu Medi-Framework",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "description": "",
+  "prompt": ""
+}

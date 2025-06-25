@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Medical Interface System</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💠</text></svg>">
+  <script type="importmap">
+    {
+      "imports": {
+        "@google/genai": "https://esm.sh/@google/genai@^0.7.0"
+      }
+    }
+  </script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+  <nav id="top-navigation-bar">
+    <div id="framework-branding">
+      <img src="https://raw.githubusercontent.com/ShimazuSystems/TSUKUYOMI/refs/heads/main/.github/ShimazuSystemsLogoT.png" alt="Shimazu Systems Logo" id="framework-logo">
+      <span id="framework-name">SHIMAZU MEDI-FRAMEWORK</span>
+    </div>
+    <div id="patient-identification-panel">
+      <span>PATIENT: <span id="current-patient-id">PATIENT-0000</span></span>
+    </div>
+    <div id="nexus-system-status">
+      <span id="gemini-api-status-text">GEMINI API: INITIALIZING...</span> | <span id="system-time">TIME: HH:MM:SS</span>
+    </div>
+    <!-- User profile settings button removed -->
+  </nav>
+
+  <main>
+    <div class="container">
+      <aside id="left-component-navigation-panel" aria-labelledby="component-navigation-heading">
+        <h2 id="component-navigation-heading" class="panel-title">SYSTEM NAVIGATION</h2>
+        <div id="patient-encounter-list-section">
+            <div id="patient-encounter-header">
+                <h3>PATIENTS</h3>
+                <div id="patient-header-actions">
+                  <button id="rename-active-encounter-button" aria-label="Rename active encounter" disabled>
+                    <span>Rename</span>
+                  </button>
+                  <button id="new-encounter-button" aria-label="Start a new encounter">
+                    <span>+ New</span>
+                  </button>
+                </div>
+            </div>
+            <ul id="patient-encounters-list" role="listbox" aria-label="Patient encounters">
+              <!-- Encounter items will be populated here -->
+            </ul>
+        </div>
+
+        <div id="patient-data-section">
+            <button id="patient-data-button" class="patient-data-button">PATIENT DATA</button>
+        </div>
+
+        <div id="body-system-tabs-container">
+            <h3 class="overview-section-title">BODY SYSTEMS</h3>
+            <div id="body-system-tabs" role="tablist" aria-orientation="vertical">
+                <!-- System tabs will be populated here by JS -->
+            </div>
+        </div>
+      </aside>
+      
+      <section id="center-assessment-documentation-panel" aria-labelledby="assessment-documentation-heading">
+        
+        <div id="selected-system-display-header" style="display: none;">
+            Selected System: <span id="current-selected-system-name">None</span>
+        </div>
+
+        <div id="assessment-tabs">
+            <button class="tab-button active" data-tab="nexus-ai-tab">MEDIFRAMEWORK</button>
+            <button class="tab-button" data-tab="clinical-interface-tab">CLINICAL</button>
+            <button class="tab-button" data-tab="psychometric-tools-tab">PSYCHOMETRICS</button>
+        </div>
+
+        <div id="nexus-ai-tab" class="tab-content active">
+            <div class="nexus-main-header">
+                MEDIFRAMEWORK AGENT v.1.0. <span id="nexus-voice-status-indicator">[VOICE: INACTIVE]</span>
+            </div>
+
+            <div id="nexus-speech-input-status-display" class="nexus-status-panel">
+                VOICE INPUT STATUS: <span id="nexus-input-listening-status">[STANDBY]</span> | 
+                CONFIDENCE: <span id="nexus-input-confidence-value">--%</span> | 
+                NOISE: <span id="nexus-input-noise-level">[LOW]</span>
+                <div class="nexus-transcription-area">
+                    &gt; "<span id="nexus-live-transcription-text">Live transcription of user speech appears here...</span>"
+                </div>
+                <!-- TRANSCRIPTION CONFIDENCE line removed -->
+                <div class="nexus-actions">
+                    <!-- [C]ONFIRM TRANSCRIPTION [R]E-RECORD [E]DIT TEXT [P]ROCESS INPUT -->
+                    <!-- Actions are implicitly handled by speech API for now -->
+                </div>
+            </div>
+
+            <div id="nexus-speech-output-status-display" class="nexus-status-panel">
+                MEDIFRAMEWORK RESPONSE PREPARATION: <span id="nexus-response-preparation-status">[IDLE]</span> / MEDIFRAMEWORK ANALYSIS COMPLETE <span id="nexus-voice-ready-indicator">[VOICE: NOT READY]</span> <br>
+                AUDIO OUTPUT: <span id="nexus-audio-output-status">[DISABLED]</span> | 
+                VOICE PROFILE: <span id="nexus-voice-profile-display">[CLINICAL_PROFESSIONAL]</span> 
+                <!-- Speech rate and other settings moved to settings panel
+                | SPEECH RATE: <span id="nexus-speech-rate-slider" class="ui-slider-placeholder">NORMAL [|<span style="color:var(--accent-green)">|||||</span>-----|]</span> 
+                -->
+                <div class="nexus-response-area">
+                    MEDIFRAMEWORK AGENT RESPONSE: "<span id="nexus-ai-response-text">AI-generated clinical response based on user input.</span>"
+                </div>
+                <div class="nexus-actions">
+                    <!-- [P]LAY AUDIO [A]DJUST VOICE [T]EXT ONLY [S]AVE RESPONSE -->
+                    <!-- Actions related to direct playback/adjustment are handled by speaker/mic settings buttons -->
+                </div>
+            </div>
+            
+            <div id="nexus-voice-control-panel">
+                <div class="nexus-sub-panel-title">VOICE CONTROLS & TRANSCRIPT</div>
+                <div class="nexus-controls-grid">
+                    <div class="control-group">
+                        MIC STATUS: <span id="nexus-mic-status-text">[OFF]</span> <span id="nexus-mic-level-meter" class="ui-mic-level-placeholder">|||||</span> 
+                        <button class="nexus-control-button" id="nexus-mic-mute-button">[START MIC]</button> 
+                        <button class="nexus-control-button" id="nexus-mic-settings-button">[VOICE SETTINGS]</button>
+                    </div>
+                    <div class="control-group">
+                        SPEAKER: <span id="nexus-speaker-status-text">[OFF]</span> <span id="nexus-speaker-volume-slider" class="ui-volume-slider-placeholder">[|<span style="color:var(--accent-green)">|||||</span>-----|]</span> 
+                        <button class="nexus-control-button" id="nexus-speaker-mute-button">[MUTE/UNMUTE]</button> 
+                        <button class="nexus-control-button" id="nexus-speaker-test-button">[TEST]</button>
+                    </div>
+                    <div class="control-group">
+                        INPUT METHODS: 
+                        <button class="nexus-control-button" id="nexus-input-voice-button">[V] VOICE</button> 
+                        <button class="nexus-control-button active" id="nexus-input-text-button">[T] TEXT</button> 
+                        <button class="nexus-control-button" id="nexus-input-both-button">[B] BOTH</button>
+                    </div>
+                    <div class="control-group">
+                        CONVERSATION MODE: 
+                        <button class="nexus-control-button active" id="nexus-mode-consult-button">[C] CONSULT</button> 
+                        <button class="nexus-control-button" id="nexus-mode-diag-button">[D] DIAGNOSTIC</button> 
+                        <button class="nexus-control-button" id="nexus-mode-edu-button">[E] EDUCATION</button>
+                    </div>
+                </div>
+
+                <div id="nexus-session-transcript-container" class="ui-scrollable-text-area">
+                    SESSION TRANSCRIPT:
+                    <div id="chat-history" role="log" aria-live="polite">
+                      <!-- Chat messages (now transcript items) will appear here -->
+                    </div>
+                </div>
+                
+                <div id="file-upload-zone" aria-labelledby="file-upload-heading-active">
+                  <h3 id="file-upload-heading-active" class="visually-hidden">File Upload</h3>
+                  <div id="drop-prompt">
+                    <p>DRAG & DROP FILES/<label for="file-input" class="file-input-label">CLICK TO SELECT</label>.</p>
+                    <input type="file" id="file-input" multiple accept="image/*,text/plain,.pdf,.csv,.json,.md,.docx,.xlsx">
+                  </div>
+                  <div id="uploaded-files-list">
+                    <!-- Uploaded file previews will appear here -->
+                  </div>
+                </div>
+
+                <div id="quick-access-buttons" aria-label="Quick Access Prompts">
+                  <button data-prompt="Suggest differential diagnoses for symptoms: " class="quick-button">DIFFERENTIAL</button>
+                  <button data-prompt="Analyze attached lab results: " class="quick-button">LABS</button>
+                  <button data-prompt="Drug interaction check: " class="quick-button">DRUGS</button>
+                  <button data-prompt="Explain term: " class="quick-button">TERMINOLOGY</button>
+                </div>
+                
+                <form id="chat-form">
+                  <textarea id="chat-input" placeholder="MEDIFRAMEWORK Query / Clinical Command..." aria-label="Chat input" rows="2" required></textarea>
+                  <button type="submit" id="send-button" aria-label="Send message">
+                    <span>SEND</span>
+                  </button>
+                </form>
+
+                 <div class="nexus-actions transcript-actions">
+                    <!-- [C]LEAR TRANSCRIPT [S]AVE SESSION [E]XPORT AUDIO -->
+                 </div>
+            </div>
+
+            <div id="nexus-voice-settings-panel" class="nexus-status-panel" style="display: none;"> 
+                <div class="nexus-sub-panel-title">MEDIFRAMEWORK VOICE CONFIGURATION</div>
+                <div class="settings-section">
+                    <h4>SPEECH RECOGNITION (BROWSER DEFAULT)</h4>
+                    Language Model: [MEDICAL_ENGLISH_US] (auto-set by browser)<br>
+                    <!-- Specialty Focus: <span class="ui-dropdown-placeholder">[General ▼]</span> <br> -->
+                    <!-- Accent Adaptation: <span class="ui-toggle-placeholder">[ON | off]</span> <br> -->
+                    <!-- Medical Terminology: <span class="ui-toggle-placeholder">[ON | off]</span> -->
+                </div>
+                <div class="settings-section">
+                    <h4>VOICE SYNTHESIS</h4>
+                    <label for="nexus-voice-profile-select">Voice Profile:</label>
+                    <select id="nexus-voice-profile-select" class="nexus-settings-select"></select><br>
+                    
+                    <label for="nexus-speech-rate-input">Speaking Rate (<span id="nexus-speech-rate-value">1.0</span>):</label>
+                    <input type="range" id="nexus-speech-rate-input" min="0.5" max="2" step="0.1" value="1.0" class="nexus-settings-slider"><br>
+
+                    <label for="nexus-speech-pitch-input">Pitch (<span id="nexus-speech-pitch-value">1.0</span>):</label>
+                    <input type="range" id="nexus-speech-pitch-input" min="0" max="2" step="0.1" value="1.0" class="nexus-settings-slider"><br>
+                    <!-- Emphasis: [MEDICAL_TERMS] [DRUG_NAMES] [CRITICAL_VALUES] -->
+                </div>
+                <div class="settings-section">
+                    <h4>INTERACTION PREFERENCES</h4>
+                    Auto-Play Responses: <button id="nexus-auto-play-toggle" class="nexus-control-button">[ON]</button> <br>
+                    <!-- Wait for Confirmation: <span class="ui-toggle-placeholder">[ON | off]</span> <br> -->
+                    <!-- Interrupt Handling: [PAUSE_AND_RESUME ▼] -->
+                </div>
+                <div class="nexus-actions">
+                    <button class="nexus-control-button" id="nexus-test-voice-settings">[TEST VOICE]</button>
+                    <!-- <button class="nexus-control-button" id="nexus-calibrate-mic-settings">[CALIBRATE MIC]</button> -->
+                    <button class="nexus-control-button" id="nexus-reset-voice-settings">[RESET DEFAULTS]</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="clinical-interface-tab" class="tab-content">
+            <div id="clinical-sub-tabs">
+                <button class="clinical-subtab-button active" data-subtab="predictive-assessment-subtab-content">Predictive Assessment</button>
+                <button class="clinical-subtab-button" data-subtab="clinical-notes-subtab-content">Clinical Notes</button>
+            </div>
+
+            <div id="predictive-assessment-subtab-content" class="clinical-subtab-content active">
+                <div id="predictive-assessment-ai-section">
+                    <h3 class="predictive-assessment-title">MEDIFRAMEWORK Predictive Assessment Engine</h3>
+                    <p class="predictive-assessment-instruction">
+                        Enter consolidated clinical notes below to receive an AI-driven predictive assessment regarding potential future risks, monitoring suggestions, and preventative considerations. This tool provides preliminary insights and does not replace clinical judgment. Results are based solely on the input provided.
+                    </p>
+                    <textarea id="predictive-notes-input" placeholder="Paste or type consolidated clinical notes here for predictive analysis..." aria-label="Clinical notes for predictive assessment" rows="8"></textarea>
+                    <button id="get-predictive-assessment-button" class="clinical-action-button" aria-label="Analyze notes for prediction">Analyze Notes for Prediction</button>
+                    <div id="predictive-assessment-output" class="predictive-assessment-output-area" aria-live="polite">
+                        <!-- AI Predictive Assessment will be displayed here -->
+                        <p>Predictive assessment will appear here after analysis.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="clinical-notes-subtab-content" class="clinical-subtab-content">
+                <div id="notes-content">
+                  <div class="note-category" id="notes-red-flags-container">
+                    <h3 id="notes-red-flags-heading"><span class="priority-red-dot"></span>Red Flags</h3>
+                    <ul aria-labelledby="notes-red-flags-heading" id="notes-red-flags-list"></ul>
+                  </div>
+                  <div class="note-category" id="notes-symptoms-container">
+                    <h3 id="notes-symptoms-heading">Symptoms</h3>
+                    <ul aria-labelledby="notes-symptoms-heading" id="notes-symptoms-list"></ul>
+                  </div>
+                  <div class="note-category" id="notes-diagnoses-container">
+                    <h3 id="notes-diagnoses-heading">Diagnoses</h3>
+                    <ul aria-labelledby="notes-diagnoses-heading" id="notes-diagnoses-list"></ul>
+                  </div>
+                  <div class="note-category" id="notes-medications-container">
+                    <h3 id="notes-medications-heading">Medications</h3>
+                    <ul aria-labelledby="notes-medications-heading" id="notes-medications-list"></ul>
+                  </div>
+                  <div class="note-category" id="notes-follow-up-container">
+                    <h3 id="notes-follow-up-heading">Follow-up</h3>
+                    <ul aria-labelledby="notes-follow-up-heading" id="notes-follow-up-list"></ul>
+                  </div>
+                  <div class="note-category" id="notes-patient-education-container">
+                    <h3 id="notes-patient-education-heading">Patient Edu.</h3>
+                    <ul aria-labelledby="notes-patient-education-heading" id="notes-patient-education-list"></ul>
+                  </div>
+                </div>
+                <button id="export-notes-button" class="clinical-action-button" aria-label="Export notes to clipboard">Export Notes</button>
+            </div>
+        </div>
+
+        <div id="psychometric-tools-tab" class="tab-content">
+            <!-- Content will be generated by TypeScript -->
+        </div>
+      </section>
+      
+      <aside id="right-component-resources-panel" aria-labelledby="component-resources-heading">
+        <h2 id="component-resources-heading" class="panel-title">COMPONENT RESOURCES</h2>
+        <div id="component-specific-content-container">
+            <div class="resource-section" id="component-specific-tools-container">
+                <h3 class="resource-section-title">System-Specific Tools</h3>
+                <p>Select a body system from the left to see relevant tools.</p>
+            </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    <p id="disclaimer">User Data is stored locally. For authorized Personal Use only.</p>
+    <p id="licence">©2025 Shimazu Systems - Powered by Gemini AI Core</p>
+  </footer>
+  
+  <div id="loading-indicator" style="display: none;" role="alert" aria-live="assertive">
+    <img src="https://raw.githubusercontent.com/ShimazuSystems/TSUKUYOMI/refs/heads/main/.github/ShimazuSystemsLogoT.png" alt="Processing..." id="loading-logo">
+    <p>PROCESSING...</p>
+  </div>
+  
+  <audio id="ui-button-sound" src="https://github.com/ShimazuSystems/ShimazuSystems-resources/raw/refs/heads/main/sounds/UIBeep.mp3" preload="auto"></audio>
+  <audio id="ui-long-beep-sound" src="https://github.com/ShimazuSystems/ShimazuSystems-resources/raw/refs/heads/main/sounds/UI_LongBeep.mp3" preload="auto"></audio>
+  <audio id="ui-online-sound" src="https://github.com/ShimazuSystems/ShimazuSystems-resources/raw/refs/heads/main/sounds/UI_Online.mp3" preload="auto"></audio>
+
+  <div id="rename-modal" class="modal-overlay" style="display: none;" role="dialog" aria-labelledby="rename-modal-title" aria-modal="true">
+    <div class="modal-content">
+      <h2 id="rename-modal-title" class="modal-title-text">Rename Patient</h2>
+      <input type="text" id="rename-modal-input" aria-label="New patient name" placeholder="Enter new patient name">
+      <div class="modal-actions">
+        <button id="rename-modal-ok" class="modal-button modal-button-ok">OK</button>
+        <button id="rename-modal-cancel" class="modal-button modal-button-cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="patient-data-modal" class="modal-overlay" style="display: none;" role="dialog" aria-labelledby="patient-data-modal-title" aria-modal="true">
+    <div class="modal-content modal-scrollable-content">
+      <h2 id="patient-data-modal-title" class="modal-title-text">Patient Core Data</h2>
+      
+      <fieldset class="modal-fieldset">
+        <legend class="modal-legend">Basic Identity</legend>
+        <div class="modal-input-group">
+          <label for="patient-data-firstName" class="modal-label">First Name:</label>
+          <input type="text" id="patient-data-firstName" class="modal-input" placeholder="First Name">
+        </div>
+        <div class="modal-input-group">
+          <label for="patient-data-middleName" class="modal-label">Middle Name:</label>
+          <input type="text" id="patient-data-middleName" class="modal-input" placeholder="Middle Name (Optional)">
+        </div>
+        <div class="modal-input-group">
+          <label for="patient-data-lastName" class="modal-label">Last Name:</label>
+          <input type="text" id="patient-data-lastName" class="modal-input" placeholder="Last Name">
+        </div>
+        <div class="modal-input-group">
+          <label for="patient-data-dob" class="modal-label">Date of Birth:</label>
+          <input type="date" id="patient-data-dob" class="modal-input">
+        </div>
+        <div class="modal-input-group">
+          <label for="patient-data-age" class="modal-label">Age:</label>
+          <input type="number" id="patient-data-age" class="modal-input" placeholder="Years">
+        </div>
+        <div class="modal-input-group">
+          <label for="patient-data-gender" class="modal-label">Gender/Sex:</label>
+          <select id="patient-data-gender" class="modal-input">
+            <option value="">-- Select --</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="non-binary">Non-binary</option>
+            <option value="other">Other</option>
+            <option value="preferNotToSay">Prefer not to say</option>
+          </select>
+        </div>
+        <div class="modal-input-group">
+          <label for="patient-data-city" class="modal-label">City:</label>
+          <input type="text" id="patient-data-city" class="modal-input" placeholder="City (Optional)">
+        </div>
+      </fieldset>
+
+      <fieldset class="modal-fieldset">
+        <legend class="modal-legend">Essential Medical Details</legend>
+        <div class="modal-input-group">
+          <label for="patient-data-medications" class="modal-label">Current Medications & Dosages:</label>
+          <textarea id="patient-data-medications" class="modal-textarea" rows="3" placeholder="List medications and dosages..."></textarea>
+        </div>
+        <div class="modal-input-group">
+          <label for="patient-data-allergies" class="modal-label">Known Allergies:</label>
+          <textarea id="patient-data-allergies" class="modal-textarea" rows="3" placeholder="Medications, foods, environmental allergies..."></textarea>
+        </div>
+        <div class="modal-input-group">
+          <label for="patient-data-chronicConditions" class="modal-label">Chronic Conditions/Ongoing Health Issues:</label>
+          <textarea id="patient-data-chronicConditions" class="modal-textarea" rows="3" placeholder="List chronic conditions..."></textarea>
+        </div>
+        <div class="modal-input-group">
+          <label for="patient-data-previousSurgeries" class="modal-label">Previous Major Surgeries:</label>
+          <textarea id="patient-data-previousSurgeries" class="modal-textarea" rows="2" placeholder="List previous major surgeries..."></textarea>
+        </div>
+        <div class="modal-input-group">
+          <label for="patient-data-reasonForVisit" class="modal-label">Current Symptoms/Reason for Visit:</label>
+          <textarea id="patient-data-reasonForVisit" class="modal-textarea" rows="3" placeholder="Describe current symptoms or reason for visit..."></textarea>
+        </div>
+        <div class="modal-input-group">
+          <label for="patient-data-pcp" class="modal-label">Primary Care Physician:</label>
+          <input type="text" id="patient-data-pcp" class="modal-input" placeholder="PCP Name (Optional)">
+        </div>
+      </fieldset>
+      
+      <fieldset class="modal-fieldset">
+        <legend class="modal-legend">Additional Notes</legend>
+        <div class="modal-input-group">
+          <label for="patient-data-additionalNotes" class="modal-label">Notes:</label>
+          <textarea id="patient-data-additionalNotes" class="modal-textarea" rows="3" placeholder="Any additional relevant notes..."></textarea>
+        </div>
+      </fieldset>
+
+      <div class="modal-actions">
+        <button id="patient-data-modal-save" class="modal-button modal-button-ok">Save</button>
+        <button id="patient-data-modal-cancel" class="modal-button modal-button-cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+
+  <script type="module" src="index.tsx"></script>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>

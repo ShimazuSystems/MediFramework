@@ -1,0 +1,1908 @@
+/* Global Reset & Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-deep-charcoal: #0d1117;
+  --bg-charcoal: #1a1a1a;
+  --bg-panel: #161b22;
+  --accent-cyan: #00ffff;
+  --accent-cyan-dark: #007f7f;
+  --accent-green: #00ff41;
+  --accent-amber: #ffaa00;
+  --text-primary: #cccccc;
+  --text-secondary: #888888;
+  --border-sharp: #30363d;
+  --border-highlight: var(--accent-cyan);
+  --font-mono: 'Share Tech Mono', monospace;
+
+  --severity-normal: #00ff41;
+  --severity-mild: #ffcc00;
+  --severity-moderate: #ff6600;
+  --severity-critical: #ff0000;
+  --severity-chronic: #8b00ff;
+  --severity-nodata: #666666;
+
+  /* Psychometric Specific Colors */
+  --psych-bg: #0a0c10; /* Even darker for terminal */
+  --psych-text: var(--accent-cyan);
+  --psych-text-dim: #007f7f; /* Darker cyan for less important text */
+  --psych-highlight: var(--accent-cyan);
+  --psych-border: #004444;
+  --psych-selection-bg: #005555;
+  --psych-button-bg: transparent;
+  --psych-button-border: var(--psych-highlight);
+  --psych-button-text: var(--psych-highlight);
+  --psych-button-hover-bg: var(--psych-highlight);
+  --psych-button-hover-text: var(--psych-bg);
+
+
+  /* NEXUS Specific */
+  --nexus-bg: var(--bg-panel);
+  --nexus-text: var(--accent-cyan);
+  --nexus-border: var(--border-sharp);
+  --nexus-header-bg: var(--bg-charcoal);
+  --nexus-accent-text: var(--accent-green);
+  --nexus-control-bg: #22252a;
+  --nexus-control-border: var(--accent-cyan-dark);
+  --nexus-control-hover-bg: #003333;
+
+  /* Body System Tools Specific */
+  --tool-bg: var(--bg-deep-charcoal); /* Slightly darker bg for tool content */
+  --tool-border: var(--psych-border); /* Consistent with psych terminal */
+  --tool-text: var(--psych-text);
+  --tool-highlight: var(--psych-highlight);
+  --tool-button-bg: var(--psych-button-bg);
+  --tool-button-border: var(--psych-button-border);
+  --tool-button-text: var(--psych-button-text);
+  --tool-button-hover-bg: var(--psych-button-hover-bg);
+  --tool-button-hover-text: var(--psych-button-hover-text);
+}
+
+body {
+  font-family: var(--font-mono);
+  background-color: var(--bg-deep-charcoal);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Reverted from height: 100vh */
+  /* overflow: hidden; REMOVED */
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-charcoal);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-sharp);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-cyan-dark);
+}
+
+
+/* Top Navigation Bar */
+#top-navigation-bar {
+  background-color: var(--nexus-header-bg);
+  color: var(--accent-cyan);
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-highlight);
+  flex-shrink: 0;
+  height: 50px;
+}
+
+#framework-branding {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; 
+}
+
+#framework-logo {
+  height: 30px; 
+  width: auto;
+}
+
+#framework-name {
+  color: #ffffff; 
+  font-weight: bold;
+  font-size: 1rem; 
+}
+
+#patient-identification-panel span { color: var(--accent-cyan); }
+#current-patient-id { color: var(--accent-green); font-weight: bold; }
+
+#nexus-system-status {
+  color: var(--accent-amber);
+  font-size: 0.9rem;
+}
+#nexus-status-text { color: var(--accent-green); }
+
+/* User settings button styles removed as button is removed */
+
+/* Main Content Area */
+main {
+  flex-grow: 1;
+  padding: 0.5rem;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 1800px; 
+  height: calc(100vh - 50px - 40px - 1rem); 
+}
+
+/* Panels General Styling */
+#left-component-navigation-panel,
+#center-assessment-documentation-panel,
+#right-component-resources-panel {
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border-sharp);
+  border-radius: 0;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panel-title {
+  font-size: 1rem;
+  color: var(--accent-cyan);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0rem;
+  border-bottom: 1px solid var(--border-sharp);
+  text-align: center;
+  letter-spacing: 0px;
+  flex-shrink: 0;
+  border: 1px solid var(--accent-cyan);
+}
+
+/* Left Panel: Component Navigation */
+#left-component-navigation-panel { flex: 1; min-width: 250px; max-width: 350px; }
+#patient-encounter-list-section { display: flex; flex-direction: column; min-height: 150px; margin-bottom: 1rem; flex-shrink: 0; }
+#patient-encounter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  flex-shrink: 0;
+}
+#patient-encounter-header h3 { color: var(--accent-cyan); font-size: 1rem; margin-right: auto; }
+
+#patient-header-actions {
+  display: flex;
+  gap: 0.5rem; /* Space between Rename and New buttons */
+}
+
+#new-encounter-button,
+#rename-active-encounter-button {
+  background-color: transparent;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  border-radius: 0;
+  transition: background-color 0.1s, color 0.1s;
+  white-space: nowrap;
+}
+
+#new-encounter-button {
+  color: var(--accent-green);
+  border: 1px solid var(--accent-green);
+}
+#new-encounter-button:hover { background-color: var(--accent-green); color: var(--bg-deep-charcoal); }
+
+#rename-active-encounter-button {
+  color: var(--accent-cyan);
+  border: 1px solid var(--accent-cyan);
+}
+#rename-active-encounter-button:hover { background-color: var(--accent-cyan); color: var(--bg-deep-charcoal); }
+
+#new-encounter-button:disabled,
+#rename-active-encounter-button:disabled { 
+  border-color: #444; color: #666; cursor: not-allowed; 
+}
+#new-encounter-button:disabled:hover,
+#rename-active-encounter-button:disabled:hover { 
+  background-color: transparent; 
+}
+
+
+#patient-encounters-list {
+  list-style: none;
+  overflow-y: auto;
+  flex-grow: 1;
+  border: 1px solid var(--border-sharp);
+  padding: 0.25rem;
+  background-color: var(--bg-deep-charcoal);
+}
+.patient-encounter-item {
+  padding: 0.5rem;
+  border: 1px solid var(--border-sharp);
+  margin-bottom: 0.25rem;
+  cursor: pointer;
+  background-color: var(--bg-charcoal);
+  font-size: 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-primary);
+}
+.patient-encounter-item:hover { border-color: var(--accent-cyan); }
+.patient-encounter-item.active {
+  background-color: #003333; 
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+.encounter-name { flex-grow: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.encounter-timestamp { font-size: 0.9em; color: var(--text-secondary); margin-left: 0.5rem; }
+/* .rename-encounter-button removed */
+.delete-encounter-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1em;
+  padding: 0 0.2rem;
+  margin-left: 0.3rem;
+  color: var(--accent-amber);
+}
+.delete-encounter-button:hover { color: #ff0000; }
+
+
+#patient-data-section {
+  margin-bottom: 1rem; /* Space below the button */
+  flex-shrink: 0;
+}
+.panel-button { /* Generic panel button style */
+  width: 100%;
+  padding: 0.6rem;
+  background-color: var(--bg-charcoal);
+  color: var(--accent-cyan);
+  border: 1px solid var(--accent-cyan-dark);
+  font-family: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 0;
+  transition: background-color 0.1s, color 0.1s, border-color 0.1s;
+}
+.panel-button:hover {
+  background-color: var(--accent-cyan);
+  color: var(--bg-deep-charcoal);
+  border-color: var(--accent-cyan);
+}
+.patient-data-button {
+  width: 100%;
+  padding: 0.6rem;
+  background-color: var(--bg-charcoal);
+  color: var(--accent-green);
+  border: 1px solid var(--accent-green);
+  font-family: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 0;
+  transition: background-color 0.1s, color 0.1s, border-color 0.1s;
+  /* Specific styles if needed, otherwise .panel-button is fine */
+}
+
+#body-system-tabs-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+#body-system-tabs-container .overview-section-title { 
+    font-size: 1rem;
+    color: var(--accent-cyan);
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid var(--border-sharp);
+    flex-shrink: 0;
+}
+#body-system-tabs {
+    list-style: none;
+    overflow-y: auto;
+    flex-grow: 1;
+    padding: 0.25rem;
+    border: 1px solid var(--border-sharp);
+    background-color: var(--bg-deep-charcoal);
+}
+.system-tab-button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    margin-bottom: 0.25rem;
+    background-color: var(--bg-charcoal);
+    color: var(--accent-cyan);
+    border: 1px solid var(--accent-cyan-dark);
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    border-radius: 0;
+    transition: background-color 0.1s, color 0.1s, border-color 0.1s;
+}
+.system-tab-button:hover {
+    border-color: var(--accent-cyan);
+    background-color: #2a2f38;
+}
+.system-tab-button.active {
+    background-color: var(--accent-cyan);
+    color: var(--bg-deep-charcoal);
+    border-color: var(--accent-cyan);
+    font-weight: bold;
+}
+.severity-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 0; 
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Center Panel: Assessment & Documentation */
+#center-assessment-documentation-panel { flex: 2.5; min-width: 400px; }
+
+#selected-system-display-header {
+    color: var(--accent-green);
+    padding: 0.3rem 0.5rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid var(--border-sharp);
+    background-color: var(--bg-charcoal);
+    text-align: center;
+    font-size: 0.9rem;
+}
+#current-selected-system-name {
+    font-weight: bold;
+}
+
+#assessment-tabs {
+  display: flex;
+  margin-bottom: 0.75rem;
+  /* border-bottom: 1px solid var(--border-sharp); Removed */
+  gap: 0.25rem; /* Added for spacing between tab boxes */
+  flex-shrink: 0;
+}
+.tab-button { 
+  flex-grow: 1;
+  padding: 0.15rem;
+  background-color: var(--bg-charcoal); /* Changed from transparent */
+  border: 1px solid var(--accent-cyan-dark); /* Changed from none + bottom border */
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1rem;
+  text-align: center; /* Added for better text centering */
+  border-radius: 0;
+  transition: background-color 0.1s, color 0.1s, border-color 0.1s; /* Added transition */
+}
+.tab-button.active {
+  color: var(--accent-cyan);
+  /* border-bottom-color: var(--accent-cyan); Removed */
+  border-color: var(--accent-cyan); /* Changed to highlight full border */
+  background-color: #003333; /* Changed for active background */
+  font-weight: bold;
+}
+.tab-button:hover:not(.active) {
+  color: var(--accent-cyan); /* Changed from #bbb */
+  border-color: var(--accent-cyan); /* Changed for hover border highlight */
+  background-color: #003333; /* Changed for hover background */
+}
+
+.tab-content { display: none; flex-direction: column; height: 100%; overflow: hidden; }
+.tab-content.active { display: flex; }
+
+
+/* NEXUS-AI Tab Styling */
+#nexus-ai-tab {
+    background-color: var(--nexus-bg);
+    color: var(--nexus-text);
+    padding: 0.5rem;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    overflow-y: auto; 
+}
+
+.nexus-main-header {
+    font-size: 1.1em;
+    color: var(--accent-green);
+    padding-bottom: 0.3rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--nexus-border);
+    text-align: center;
+}
+#nexus-voice-status-indicator { color: var(--accent-amber); }
+
+.nexus-status-panel, #nexus-voice-control-panel, #nexus-voice-settings-panel {
+    border: 1px solid var(--nexus-border);
+    padding: 0.5rem;
+    background-color: var(--bg-deep-charcoal);
+    margin-bottom: 0.5rem;
+}
+.nexus-status-panel span, #nexus-voice-control-panel span, #nexus-voice-settings-panel span {
+    color: var(--text-primary);
+}
+.nexus-status-panel .nexus-actions, #nexus-voice-control-panel .nexus-actions, #nexus-voice-settings-panel .nexus-actions {
+    margin-top: 0.4rem;
+    padding-top: 0.3rem;
+    border-top: 1px dashed var(--nexus-border);
+    color: var(--accent-amber);
+    font-size: 0.9em;
+    text-align: center;
+}
+.nexus-transcription-area, .nexus-response-area {
+    background-color: var(--bg-charcoal);
+    border: 1px solid var(--nexus-border);
+    padding: 0.3rem;
+    margin: 0.3rem 0;
+    min-height: 30px;
+    color: var(--accent-cyan);
+}
+.ui-confidence-meter-placeholder, .ui-mic-level-placeholder, .ui-volume-slider-placeholder,
+.ui-dropdown-placeholder, .ui-toggle-placeholder, .ui-slider-placeholder {
+    display: inline-block;
+    padding: 0 0.3rem;
+    border: 1px solid var(--accent-cyan-dark);
+    background-color: #222;
+    color: var(--accent-cyan);
+    font-size: 0.9em;
+}
+
+#nexus-voice-control-panel .nexus-sub-panel-title {
+    font-size: 1em;
+    color: var(--accent-green);
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.2rem;
+    border-bottom: 1px solid var(--nexus-border);
+}
+.nexus-controls-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+.control-group {
+    border: 1px solid var(--nexus-control-border);
+    padding: 0.3rem;
+    background-color: var(--nexus-control-bg);
+    font-size: 0.9em;
+}
+button.nexus-control-button {
+    background-color: transparent;
+    border: 1px solid var(--accent-cyan);
+    color: var(--accent-cyan);
+    padding: 0.2rem 0.4rem;
+    margin: 0.1rem;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9em;
+}
+button.nexus-control-button:hover {
+    background-color: var(--nexus-control-hover-bg);
+}
+button.nexus-control-button.active {
+    background-color: var(--accent-cyan);
+    color: var(--bg-deep-charcoal);
+    font-weight: bold;
+}
+
+#nexus-session-transcript-container {
+    height: 250px; 
+    min-height: 150px;
+    overflow-y: auto;
+    border: 1px solid var(--nexus-border);
+    padding: 0.3rem;
+    background-color: var(--bg-deep-charcoal);
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary); 
+}
+
+#chat-history {
+  height: auto; 
+  max-height: none; 
+  flex-grow: 1; 
+  padding: 0;
+  border: none; 
+  background-color: transparent; 
+}
+#file-upload-zone { margin-top: 0.5rem; margin-bottom: 0.5rem; }
+#quick-access-buttons { margin-top: 0.5rem; margin-bottom: 0.5rem; }
+#chat-form { margin-top: 0.5rem; }
+
+
+#nexus-voice-settings-panel .settings-section {
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px dashed var(--nexus-border);
+}
+#nexus-voice-settings-panel h4 {
+    color: var(--accent-green);
+    font-size: 0.95em;
+    margin-bottom: 0.2rem;
+}
+#nexus-voice-settings-panel label {
+    color: var(--accent-cyan);
+    margin-right: 0.5rem;
+    display: inline-block;
+    margin-bottom: 0.2rem;
+}
+.nexus-settings-select, .nexus-settings-slider {
+    background-color: var(--nexus-control-bg);
+    border: 1px solid var(--nexus-control-border);
+    color: var(--accent-cyan);
+    padding: 0.2rem;
+    margin-bottom: 0.3rem;
+    font-family: inherit;
+    width: calc(100% - 120px); /* Adjust based on label width */
+    max-width: 250px;
+}
+.nexus-settings-slider {
+    width: calc(100% - 150px); /* Adjust for label and value display */
+}
+#nexus-voice-settings-panel .nexus-control-button {
+    margin: 0.3rem 0.2rem;
+}
+
+
+/* Chat History (inside NEXUS or stand-alone if other tabs use it) */
+#chat-history {
+  flex-grow: 1; overflow-y: auto; margin-bottom: 0.5rem;
+  padding: 0.3rem; display: flex; flex-direction: column; gap: 0.5rem;
+  border: 1px solid var(--border-sharp);
+  background-color: var(--bg-deep-charcoal);
+}
+.message {
+  padding: 0.6rem 0.8rem; max-width: 85%; word-wrap: break-word;
+  border: 1px solid var(--border-sharp); font-size: 0.9rem; border-radius: 0;
+}
+.message.user {
+  background-color: #003333;  color: var(--accent-cyan);
+  align-self: flex-end; border-color: var(--accent-cyan);
+}
+.message.model {
+  background-color: #202020; color: var(--text-primary);
+  align-self: flex-start; border-color: #444;
+}
+.message.model.error { background-color: #501010; color: var(--accent-amber); border-color: var(--accent-amber); }
+.message strong { font-weight: bold; color: var(--accent-green); }
+.message em { font-style: italic; color: var(--accent-amber); }
+.message pre {
+  background-color: var(--bg-deep-charcoal); padding: 0.5rem;
+  border: 1px solid var(--border-sharp); overflow-x: auto;
+  white-space: pre-wrap; word-wrap: break-word; font-size: 0.85em;
+}
+.message code { font-size: 0.9em; background-color: #333; padding: 0.1em 0.3em; border: 1px solid #444; }
+.message ul, .message ol { margin-left: 1.5rem; padding-left: 0.5rem; }
+.message li { margin-bottom: 0.2rem; }
+.message .grounding-sources { margin-top: 0.5rem; font-size: 0.8em; }
+.message .grounding-sources h4 { margin: 0.3rem 0 0.1rem; font-size: 0.85em; color: var(--accent-green); }
+.message .grounding-sources ul { list-style-type: none; padding-left: 0; margin: 0; }
+.message .grounding-sources li::before { content: "🔗 "; color: var(--accent-cyan); }
+.message .grounding-sources a { color: var(--accent-cyan); text-decoration: none; }
+.message .grounding-sources a:hover { text-decoration: underline; color: var(--accent-green); }
+.message-files { margin-top: 0.5rem; font-size: 0.8em; border-top: 1px dashed var(--border-sharp); padding-top: 0.3rem; }
+.message-files strong { color: var(--accent-amber); }
+.message-files ul { list-style-type: none; padding-left: 0; }
+.message-timestamp {
+  font-size: 0.8em;
+  color: var(--text-secondary);
+  margin-right: 0.5em;
+  display: inline-block;
+}
+
+
+#file-upload-zone {
+  margin-bottom: 0.5rem; border: 1px dashed var(--border-sharp); padding: 0.5rem;
+  text-align: center; background-color: #101010; font-size: 0.85rem;
+  flex-shrink: 0;
+}
+#file-upload-zone.drag-over { border-color: var(--accent-green); background-color: #002200; }
+.file-input-label { color: var(--accent-cyan); cursor: pointer; text-decoration: underline; }
+#file-input { display: none; }
+#uploaded-files-list { margin-top: 0.3rem; }
+.uploaded-file-item {
+  background-color: var(--bg-charcoal); color: var(--text-secondary);
+  padding: 0.2rem 0.4rem; margin-bottom: 0.2rem; font-size: 0.8rem;
+  border: 1px solid var(--border-sharp); display: flex; justify-content: space-between; align-items: center;
+}
+.uploaded-file-item button {
+  background: none; border: none; color: var(--accent-amber);
+  font-size: 1.2em; cursor: pointer; padding: 0 0.2rem;
+}
+.uploaded-file-item button:hover { color: #ff0000; }
+
+
+#quick-access-buttons { display: flex; gap: 0.3rem; margin-bottom: 0.5rem; flex-wrap: wrap; flex-shrink: 0; }
+.quick-button {
+  background-color: #22252a; color: var(--accent-cyan); border: 1px solid var(--accent-cyan-dark);
+  padding: 0.3rem 0.5rem; cursor: pointer; font-family: inherit; font-size: 0.8rem; border-radius: 0;
+}
+.quick-button:hover { background-color: var(--accent-cyan-dark); color: var(--bg-deep-charcoal); }
+
+#chat-form { display: flex; gap: 0.5rem; align-items: flex-end; flex-shrink: 0; }
+#chat-input {
+  flex-grow: 1; padding: 0.5rem; background-color: #101010;
+  color: var(--text-primary); border: 1px solid var(--border-sharp);
+  font-family: inherit; font-size: 0.9rem; resize: none; overflow-y: auto;
+  min-height: 40px; max-height: 120px; border-radius: 0;
+}
+#chat-input:focus { border-color: var(--accent-cyan); outline: none; }
+
+#send-button {
+  background-color: transparent;
+  color: var(--accent-green);
+  border: 1px solid var(--accent-green);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: bold;
+  height: 40px;
+  border-radius: 0;
+  transition: background-color 0.1s, color 0.1s;
+}
+#send-button:hover {
+  background-color: var(--accent-green);
+  color: var(--bg-deep-charcoal);
+}
+#send-button:disabled {
+  background-color: transparent;
+  color: #666;
+  border-color: #444;
+  cursor: not-allowed;
+}
+#send-button:disabled:hover {
+  background-color: transparent;
+  color: #666;
+}
+
+/* CLINICAL Tab & Sub-Tabs */
+#clinical-interface-tab {
+    /* overflow-y: auto; Removed, sub-tabs will handle their own scroll */
+    padding: 0; /* Remove padding if sub-tabs handle it */
+    flex-direction: column; 
+    gap: 0; 
+}
+
+#clinical-sub-tabs {
+    display: flex;
+    margin-bottom: 0.75rem; /* Space between sub-tab bar and content */
+    border-bottom: 1px solid var(--border-sharp);
+    flex-shrink: 0; /* Prevent sub-tab bar from shrinking */
+}
+
+.clinical-subtab-button {
+    flex-grow: 1;
+    padding: 0.5rem; /* Slightly less padding than main tabs */
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.85rem; /* Slightly smaller font */
+    text-align: center;
+}
+.clinical-subtab-button.active {
+    color: var(--accent-green); /* Use green for active sub-tab */
+    border-bottom-color: var(--accent-green);
+    font-weight: bold;
+}
+.clinical-subtab-button:hover:not(.active) {
+    color: #bbb; /* Lighter text on hover for inactive tabs */
+}
+
+.clinical-subtab-content {
+    display: none; /* Hidden by default */
+    flex-direction: column; /* Stack content vertically */
+    flex-grow: 1; /* Allow content to fill remaining space */
+    overflow-y: auto; /* Enable scrolling for sub-tab content */
+    padding: 0.5rem; /* Padding for the content area of the sub-tab */
+    gap: 0.75rem; /* Consistent gap for direct children like notes-content and export button */
+}
+.clinical-subtab-content.active {
+    display: flex; /* Show active sub-tab content */
+}
+
+
+/* Predictive Assessment AI Section (now inside a sub-tab) */
+#predictive-assessment-subtab-content {
+    /* Specific padding or gap if needed, or rely on .clinical-subtab-content */
+}
+#predictive-assessment-ai-section {
+    background-color: var(--bg-charcoal);
+    padding: 0.75rem;
+    border: 1px solid var(--border-sharp);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; 
+    flex-shrink: 0; 
+}
+.predictive-assessment-title {
+    color: var(--accent-cyan);
+    font-size: 1.1rem; 
+    margin-bottom: 0.3rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--border-sharp);
+}
+.predictive-assessment-instruction {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.3rem;
+    line-height: 1.4;
+}
+#predictive-notes-input {
+    width: 100%;
+    background-color: var(--bg-deep-charcoal);
+    color: var(--text-primary);
+    border: 1px solid var(--border-sharp);
+    padding: 0.5rem;
+    font-family: inherit;
+    font-size: 0.9rem;
+    resize: vertical;
+    min-height: 100px; 
+    max-height: 250px; 
+    border-radius: 0;
+}
+#predictive-notes-input:focus {
+    border-color: var(--accent-cyan);
+    outline: none;
+}
+.clinical-action-button { 
+    background-color: transparent;
+    color: var(--accent-green);
+    border: 1px solid var(--accent-green);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: normal;
+    text-transform: none;
+    align-self: center; 
+    border-radius: 0;
+    transition: background-color 0.1s ease, color 0.1s ease;
+    margin-top: 0.5rem; 
+}
+.clinical-action-button:hover { 
+    background-color: var(--accent-green);
+    color: var(--bg-deep-charcoal); 
+}
+.clinical-action-button:disabled {
+  border-color: #444; color: #666; cursor: not-allowed;
+}
+.clinical-action-button:disabled:hover {
+  background-color: transparent;
+}
+#get-predictive-assessment-button {
+    align-self: flex-start; 
+    margin-top: 0.3rem;
+}
+.predictive-assessment-output-area {
+    margin-top: 0.5rem;
+    padding: 0.6rem;
+    background-color: var(--bg-deep-charcoal);
+    border: 1px solid var(--border-sharp);
+    min-height: 50px;
+    max-height: 300px; 
+    overflow-y: auto;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+.predictive-assessment-output-area p:first-child {
+    margin-top: 0;
+}
+.predictive-assessment-output-area p {
+    margin-bottom: 0.5rem;
+}
+.predictive-assessment-output-area strong { 
+    color: var(--accent-green);
+}
+.predictive-assessment-output-area em { 
+    color: var(--accent-amber);
+}
+.predictive-assessment-output-area ul, 
+.predictive-assessment-output-area ol {
+    margin-left: 1.5rem;
+    padding-left: 0.5rem;
+}
+.predictive-assessment-output-area li {
+    margin-bottom: 0.2rem;
+}
+.predictive-assessment-output-area .loading-text,
+.predictive-assessment-output-area .error-text {
+    color: var(--accent-amber);
+    font-style: italic;
+}
+.predictive-assessment-output-area .error-text {
+    color: var(--severity-critical);
+}
+
+/* Clinical Notes Sub-Tab Content */
+#clinical-notes-subtab-content {
+    /* Styles for this sub-tab's content wrapper */
+    /* display: flex; flex-direction: column; is handled by .clinical-subtab-content */
+}
+
+#notes-content { 
+    flex-grow: 1; /* Allow notes grid to take available space */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 0.75rem;
+    /* overflow-y: auto; Handled by clinical-subtab-content */
+    padding: 0.5rem; 
+    background-color: var(--bg-deep-charcoal);
+    border: 1px solid var(--border-sharp);
+}
+.note-category {
+    background-color: var(--bg-charcoal);
+    padding: 0.5rem;
+    border: 1px solid var(--border-sharp);
+}
+.note-category h3 {
+    color: var(--accent-cyan); 
+    font-size: 1rem;
+    margin-bottom: 0.5rem; 
+    padding-bottom: 0.3rem; 
+    border-bottom: 1px solid var(--border-sharp); 
+    display: flex;
+    align-items: center;
+    font-weight: normal; 
+}
+.priority-red-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--severity-critical);
+    border-radius: 0;
+    margin-right: 0.5rem;
+}
+.note-category ul {
+    list-style-type: none;
+    padding-left: 0;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    max-height: 150px; 
+    overflow-y: auto;
+}
+.note-category li {
+    padding: 0.2rem 0; 
+    border-bottom: 1px solid #2a2f38;
+}
+.note-category li:last-child { border-bottom: none; }
+.na-item { color: var(--text-secondary); font-style: italic; }
+
+#export-notes-button { 
+    margin-top: 1rem;
+    margin-bottom: 0.5rem; 
+    align-self: center; /* Center export button */
+}
+
+
+/* Right Panel: Component Resources */
+#right-component-resources-panel { flex: 1; min-width: 250px; max-width: 350px; }
+#component-specific-content-container {
+  display: flex; flex-direction: column; gap: 0.75rem;
+  overflow-y: auto; flex-grow: 1;
+}
+.resource-section {
+  background-color: var(--bg-charcoal);
+  border: 1px solid var(--border-sharp);
+  padding: 0.5rem;
+  display: flex; /* Allow children to flex */
+  flex-direction: column; /* Stack title and content */
+}
+.resource-section-title {
+  color: var(--accent-cyan);
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+  border-bottom: 1px solid var(--border-highlight);
+  padding-bottom: 0.2rem;
+  flex-shrink: 0; /* Prevent title from shrinking */
+}
+.resource-section p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  flex-grow: 1; /* Allow paragraph to take remaining space if needed */
+  overflow-y: auto; /* If content inside p gets too long */
+}
+/* This div will hold the actual tool UI or menu */
+.tool-content-area {
+    background-color: var(--tool-bg);
+    color: var(--tool-text);
+    padding: 0.5rem;
+    border: 1px solid var(--tool-border);
+    flex-grow: 1; /* Allow tool content to fill space */
+    overflow-y: auto; /* Scroll if tool content is too long */
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Footer */
+footer {
+  background-color: var(--nexus-header-bg);
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 0.3rem;
+  font-size: 0.75rem;
+  border-top: 1px solid var(--border-highlight);
+  flex-shrink: 0;
+  height: 40px;
+  line-height: 1.2;
+}
+#disclaimer { font-weight: bold; color: var(--accent-amber); }
+
+/* Loading Indicator */
+#loading-indicator {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  z-index: 1000; color: var(--accent-green);
+}
+#loading-logo {
+  width: 80px;
+  height: auto;
+  margin-bottom: 1rem;
+  /* No animation needed for static logo */
+}
+
+
+/* Visually Hidden */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* --- Psychometric Terminal General Styles --- */
+#psychometric-terminal-display {
+    background-color: var(--psych-bg);
+    color: var(--psych-text);
+    padding: 0.5rem;
+    border: 2px solid var(--psych-border);
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+}
+.psych-terminal-header {
+    border-bottom: 1px solid var(--psych-border);
+    padding-bottom: 0.3rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.8em;
+    color: var(--psych-text-dim);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.psych-terminal-header span { margin-right: 1em; }
+.psych-header-status { color: var(--psych-highlight); }
+.psych-header-time { color: var(--accent-amber); }
+
+.psych-module-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+.psych-module-title {
+    color: var(--psych-highlight);
+    font-size: 1.2em;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    border-bottom: 1px solid var(--psych-highlight);
+    padding-bottom: 0.2rem;
+}
+.psych-module-subtitle {
+    color: var(--psych-text);
+    font-size: 1em;
+    margin-top: 0.5rem;
+    margin-bottom: 0.3rem;
+}
+.psych-assessment-instruction, .pcl5-criterion-marker, .trait-description {
+    color: var(--psych-text-dim);
+    font-size: 0.9em;
+    margin-bottom: 0.5rem;
+}
+.term-highlight { color: var(--psych-highlight); }
+pre.terminal-preformatted-text {
+    background-color: #05080a;
+    border: 1px solid var(--psych-border);
+    padding: 0.5rem;
+    margin: 0.3rem 0;
+    color: var(--psych-text);
+    white-space: pre-wrap;
+    word-break: break-all;
+    font-size: 0.9em;
+}
+
+.psych-actions {
+    margin-top: 0.75rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed var(--psych-border);
+    text-align: center;
+    color: var(--accent-amber);
+}
+.psych-actions button, .psych-nav-options button {
+    background-color: var(--psych-button-bg);
+    border: 1px solid var(--psych-button-border);
+    color: var(--psych-button-text);
+    padding: 0.3rem 0.6rem;
+    margin: 0.2rem;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9em;
+    border-radius: 0;
+}
+.psych-actions button:hover, .psych-nav-options button:hover {
+    background-color: var(--psych-button-hover-bg);
+    color: var(--psych-button-hover-text);
+}
+.psych-actions button:disabled {
+    border-color: var(--psych-text-dim);
+    color: var(--psych-text-dim);
+    cursor: not-allowed;
+    opacity: 0.6;
+    background-color: transparent;
+}
+
+.psych-nav-options {
+    margin-top: auto; /* Pushes to bottom */
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--psych-border);
+    text-align: right;
+}
+
+/* --- Psychometric UI Components --- */
+.ui-progress-bar {
+    width: 100%;
+    background-color: var(--psych-border);
+    border: 1px solid var(--psych-text-dim);
+    height: 20px;
+    position: relative;
+    margin: 0.3rem 0;
+}
+.ui-progress-bar-fill {
+    background-color: var(--psych-highlight);
+    height: 100%;
+    transition: width 0.2s ease-out;
+}
+.ui-progress-bar-text {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--psych-bg); /* Contrast against fill */
+    font-size: 0.8em;
+    mix-blend-mode: difference; /* Helps with visibility on different fill levels */
+}
+
+.ui-slider-container { margin: 0.5rem 0; }
+.ui-slider-label { display: block; margin-bottom: 0.2rem; color: var(--psych-text); }
+.ui-slider-wrapper { display: flex; align-items: center; gap: 0.5rem; }
+.ui-slider-minmax { font-size: 0.8em; color: var(--psych-text-dim); }
+.ui-slider-input {
+    flex-grow: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 8px;
+    background: var(--psych-border);
+    outline: none;
+    opacity: 0.9;
+    transition: opacity .15s ease-in-out;
+}
+.ui-slider-input:hover { opacity: 1; }
+.ui-slider-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--slider-color, var(--psych-highlight));
+    cursor: pointer;
+    border: 1px solid var(--psych-bg);
+}
+.ui-slider-input::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: var(--slider-color, var(--psych-highlight));
+    cursor: pointer;
+    border: 1px solid var(--psych-bg);
+    border-radius: 0;
+}
+.ui-slider-value { display: block; text-align: right; font-size: 0.8em; color: var(--psych-text-dim); margin-top: 0.1rem; }
+
+.ui-radio-group { display: flex; flex-direction: column; gap: 0.3rem; margin: 0.3rem 0; }
+.ui-radio-label { display: flex; align-items: center; cursor: pointer; color: var(--psych-text); }
+.ui-radio-input { opacity: 0; position: absolute; }
+.ui-radio-button {
+    width: 14px; height: 14px; border: 1px solid var(--psych-text);
+    margin-right: 0.5rem; display: inline-block; position: relative;
+}
+.ui-radio-input:checked + .ui-radio-button::before {
+    content: ''; position: absolute;
+    left: 2px; top: 2px; width: 8px; height: 8px;
+    background-color: var(--psych-highlight);
+}
+.ui-radio-text { font-size: 0.9em; }
+
+.phq9-question, .gad7-question, .pcl5-question {
+    margin-bottom: 0.7rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px dashed var(--psych-border);
+}
+.phq9-summary, .gad7-summary, .pcl5-summary {
+    margin-top: 0.7rem; padding: 0.5rem;
+    border: 1px solid var(--psych-text-dim);
+    background-color: #05080a;
+    font-size: 0.9em;
+}
+.pcl5-criteria-details { font-size: 0.85em; color: var(--psych-text-dim); margin-top: 0.2rem; }
+.ui-criteria-tracker { color: var(--accent-green); }
+
+.psych-main-menu { display: flex; flex-direction: column; gap: 0.3rem; }
+.psych-menu-item {
+    padding: 0.5rem; border: 1px solid var(--psych-border);
+    cursor: pointer; transition: background-color 0.1s;
+    color: var(--psych-text);
+}
+.psych-menu-item:hover { background-color: var(--psych-selection-bg); border-color: var(--psych-highlight); }
+.psych-menu-item span { margin-right: 0.5em; }
+
+/* Analytics Dashboard Specific (Removed) */
+
+/* Behavioral Log Specific (Removed) */
+
+/* Report Generator Specific */
+.report-generator-container .report-section {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border: 1px solid var(--psych-border);
+    background-color: var(--bg-charcoal);
+}
+.report-generator-container .assessment-selection-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    max-height: 200px; /* Or other suitable height */
+    overflow-y: auto;
+    padding: 0.3rem;
+    border: 1px solid var(--psych-text-dim);
+    background-color: #05080a;
+}
+.report-generator-container .assessment-selection-list .ui-checkbox-label {
+    padding: 0.2rem;
+}
+.report-generator-container .assessment-selection-list .ui-checkbox-label:hover {
+    background-color: var(--psych-selection-bg);
+}
+.report-generator-container .ui-checkbox-input:disabled + .ui-checkbox-custom + .ui-checkbox-text {
+    color: var(--psych-text-dim);
+    text-decoration: line-through;
+}
+.report-generator-container .ui-checkbox-input:disabled + .ui-checkbox-custom {
+    border-color: var(--psych-text-dim);
+}
+.report-generator-container .report-status-error {
+    color: var(--severity-critical);
+    border: 1px solid var(--severity-critical);
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+.report-generator-container .report-display-area {
+    min-height: 150px;
+    max-height: 400px; /* Adjust as needed */
+    overflow-y: auto;
+    margin-top: 0.5rem;
+}
+
+
+.ui-checkbox-label { display: flex; align-items: center; margin: 0.2rem 0; cursor: pointer; }
+.ui-checkbox-input { opacity: 0; position: absolute; }
+.ui-checkbox-custom { width: 14px; height: 14px; border: 1px solid var(--psych-text); margin-right: 0.5rem; display: flex; align-items: center; justify-content: center; }
+.ui-checkbox-input:checked + .ui-checkbox-custom::before { content: '✓'; color: var(--psych-highlight); font-size: 12px; line-height: 12px; }
+.ui-checkbox-text { font-size: 0.9em; color: var(--psych-text); }
+
+/* Clinical Interview Specific */
+#clinical-interview-log { overflow-y: auto; margin-bottom: 0.5rem; padding: 0.3rem; background-color: #05080a; border: 1px solid var(--psych-border); font-size: 0.9em; }
+.log-entry { margin-bottom: 0.5rem; padding-bottom: 0.3rem; border-bottom: 1px dashed #003333; }
+.log-entry strong { color: var(--psych-highlight); }
+.log-entry-patient strong { color: var(--accent-cyan); }
+.log-entry-analysis { font-style: italic; color: var(--psych-text-dim); font-size: 0.9em; margin-top:0.2em; padding-left: 1em; }
+button.psych-interview-button { margin: 0.2rem; } /* Style for interview buttons */
+.ui-text-area {
+    width: 100%;
+    background-color: var(--psych-bg);
+    color: var(--psych-text);
+    border: 1px solid var(--psych-border);
+    padding: 0.4rem;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 40px;
+}
+.ui-text-area:focus { border-color: var(--psych-highlight); outline: none; }
+
+/* Personality Matrix Specific */
+.personality-matrix-container .trait-assessment-block {
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--psych-border);
+}
+.personality-matrix-container .trait-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.3rem;
+}
+.personality-matrix-container .ui-text-input { /* Specific styling for PM text input if needed */
+    width: 100%;
+    background-color: var(--psych-bg);
+    color: var(--psych-text);
+    border: 1px solid var(--psych-border);
+    padding: 0.4rem;
+    font-family: inherit;
+}
+.personality-matrix-container .trait-interpretation-ai {
+    margin-top: 0.5rem;
+    padding: 0.4rem;
+    border: 1px dashed var(--psych-text-dim);
+    background-color: #05080a;
+    font-size: 0.9em;
+}
+.personality-matrix-container .trait-interpretation-ai strong { color: var(--accent-amber); }
+.personality-matrix-container .pm-status-message {
+    margin-top: 0.5rem;
+    padding: 0.4rem;
+    border: 1px solid var(--psych-text-dim);
+    text-align: center;
+}
+.personality-matrix-container .pm-status-message.loading span.term-highlight { color: var(--accent-amber); }
+.personality-matrix-container .ai-overall-summary {
+    margin-top: 1rem;
+    padding: 0.5rem;
+    border: 1px solid var(--psych-highlight);
+    background-color: #05080a;
+}
+button.psych-pm-button { margin: 0.2rem; }
+button.psych-pm-button:disabled {
+    border-color: var(--psych-text-dim);
+    color: var(--psych-text-dim);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Generic UI Elements for Psychometrics - ensure used consistently */
+.ui-text-input {
+    width: 100%;
+    background-color: var(--psych-bg); /* Default psych background */
+    color: var(--psych-text);
+    border: 1px solid var(--psych-border);
+    padding: 0.4rem;
+    font-family: inherit;
+    font-size: 0.9em; /* Ensure consistent font size */
+}
+.ui-text-input:focus { border-color: var(--psych-highlight); outline: none; }
+
+.ui-select-container { margin-bottom: 0.5rem; }
+.ui-select-label { display: block; margin-bottom: 0.1rem; color: var(--psych-text); font-size: 0.9em; }
+.ui-select-input {
+    width: 100%;
+    background-color: var(--psych-bg);
+    color: var(--psych-text);
+    border: 1px solid var(--psych-border);
+    padding: 0.4rem;
+    font-family: inherit;
+    font-size: 0.9em; /* Ensure consistent font size */
+}
+.ui-select-input:focus { border-color: var(--psych-highlight); outline: none; }
+.ui-select-input option { background-color: var(--psych-bg); color: var(--psych-text); }
+
+.ui-fieldset {
+    border: 1px solid var(--psych-border);
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+.ui-legend {
+    color: var(--psych-text);
+    padding: 0 0.3rem;
+    font-size: 0.9em;
+}
+.ui-checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem; /* spacing between checkboxes */
+}
+/* .ui-checkbox-label defined earlier is sufficient */
+.ui-input-help-text {
+    font-size: 0.85em;
+    color: var(--psych-text-dim);
+    margin-bottom: 0.3rem; /* Space before the input fields */
+    display: block;
+}
+
+
+/* --- Mental State Examination (MSE) Styles --- */
+.mse-container {
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Space between sections */
+}
+
+.mse-section {
+  background-color: var(--bg-charcoal); /* Slightly different from main panel for visual hierarchy */
+  border: 1px solid var(--psych-border);
+  padding: 0.75rem;
+  margin-bottom: 1rem; /* Consistent spacing */
+}
+
+.mse-section .psych-module-subtitle { /* Ensure specificity for MSE context */
+  color: var(--psych-highlight);
+  margin-bottom: 0.5rem;
+}
+
+.mse-section .ui-select-container,
+.mse-section .ui-fieldset { /* For select and checkbox groups */
+  margin-bottom: 0.5rem; /* Space between form elements */
+}
+.mse-section .ui-text-area {
+  width: 100%;
+  background-color: var(--psych-bg);
+  color: var(--psych-text);
+  border: 1px solid var(--psych-border);
+  padding: 0.4rem;
+  margin-top: 0.3rem; /* Space from label/select if any */
+}
+.mse-section .ui-select-input {
+  background-color: var(--psych-bg);
+  color: var(--psych-text);
+  border: 1px solid var(--psych-border);
+  padding: 0.4rem;
+  width: 100%; /* Make selects take full width */
+}
+.mse-section .ui-checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem; /* spacing between checkboxes */
+}
+.mse-section .ui-checkbox-label { /* Target labels within MSE checkbox groups */
+    margin-right: 1rem; /* spacing between checkbox labels */
+}
+
+
+.psych-mse-button {
+  background-color: transparent;
+  border: 1px solid var(--psych-highlight);
+  color: var(--psych-highlight);
+  padding: 0.4rem 0.8rem;
+  margin-top: 0.5rem;
+  margin-right: 0.5rem; /* Space between buttons */
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  border-radius: 0;
+  transition: background-color 0.1s, color 0.1s;
+}
+.psych-mse-button:hover {
+  background-color: var(--psych-highlight);
+  color: var(--psych-bg);
+}
+.psych-mse-button:disabled {
+  border-color: var(--psych-text-dim);
+  color: var(--psych-text-dim);
+  background-color: transparent;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.mse-ai-analysis {
+  margin-top: 0.75rem;
+  padding: 0.6rem;
+  border: 1px dashed var(--psych-text-dim);
+  background-color: var(--bg-deep-charcoal); /* Slightly darker to contrast section */
+  font-size: 0.9em;
+}
+.mse-ai-analysis p {
+  margin-bottom: 0.3rem;
+  color: var(--psych-text); /* Ensure good readability for AI text */
+}
+.mse-ai-analysis strong {
+  color: var(--accent-amber); /* Highlight AI labels */
+}
+.mse-ai-analysis.error {
+  border-color: var(--severity-critical);
+  background-color: #2b1a1a; /* Dark red background for errors */
+}
+.mse-ai-analysis.error strong {
+  color: var(--severity-critical);
+}
+.mse-red-flags { /* Specific class for red flags text */
+  color: var(--severity-critical);
+  font-weight: bold;
+}
+.mse-red-flags span.term-highlight { /* Ensure highlighted red flags are also red */
+    color: var(--severity-critical) !important;
+}
+
+
+.mse-status-message {
+  margin-top: 0.75rem;
+  padding: 0.6rem;
+  border: 1px solid var(--psych-text-dim);
+  text-align: center;
+}
+.mse-status-message.loading span.term-highlight {
+  color: var(--accent-amber);
+}
+.mse-status-message.error strong {
+  color: var(--severity-critical);
+}
+.mse-status-message.error {
+  border-color: var(--severity-critical);
+  color: var(--severity-critical);
+}
+
+
+.mse-overall-actions {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--psych-border);
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-start; /* Or center if preferred */
+  flex-wrap: wrap;
+}
+
+.mse-overall-summary {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border: 1px solid var(--psych-highlight);
+  background-color: var(--bg-charcoal); /* Consistent with other summary/display areas */
+}
+.mse-overall-summary .psych-module-subtitle { /* Specificity for summary title */
+  color: var(--psych-highlight);
+  margin-bottom: 0.5rem;
+}
+.mse-overall-summary p {
+  color: var(--text-primary); /* Standard text color for readability */
+}
+
+/* Ensure helper text within MSE forms is styled */
+.mse-section .ui-input-help-text {
+    font-size: 0.85em;
+    color: var(--psych-text-dim);
+    margin-bottom: 0.3rem;
+    display: block; /* Ensure it takes its own line */
+}
+
+
+/* --- Cognitive Assessment Protocol Styles (REMOVED) --- */
+
+/* Rename Modal & Patient Data Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75); /* Darker backdrop */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background-color: var(--bg-panel);
+  padding: 1.5rem; /* More padding */
+  border: 1px solid var(--border-highlight); /* Cyan border */
+  border-radius: 0; /* Sharp corners */
+  min-width: 300px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 5px 15px rgba(0,255,255,0.2); /* Subtle cyan glow */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Space between elements in modal */
+}
+
+/* Patient Data Modal Specific Adjustments */
+#patient-data-modal .modal-content {
+  max-width: 700px; /* Wider for more fields */
+}
+
+.modal-scrollable-content {
+  max-height: 85vh; /* Limit height */
+  overflow-y: auto; /* Enable vertical scroll */
+  padding-right: 0.5rem; /* Space for scrollbar */
+}
+
+
+.modal-title-text { /* New class for specific modal title styling */
+  color: var(--accent-cyan);
+  font-size: 1.2rem;
+  margin-bottom: 0; /* Use gap for spacing */
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-sharp);
+  text-align: center;
+}
+
+#rename-modal-input {
+  width: 100%;
+  padding: 0.6rem;
+  background-color: var(--bg-deep-charcoal); /* Darker input bg */
+  color: var(--text-primary);
+  border: 1px solid var(--border-sharp);
+  font-family: inherit;
+  font-size: 1rem;
+  border-radius: 0;
+}
+#rename-modal-input:focus {
+  border-color: var(--accent-cyan);
+  outline: none;
+  box-shadow: 0 0 5px var(--accent-cyan);
+}
+
+/* Patient Data Modal Fields Styling */
+.modal-fieldset {
+  border: 1px solid var(--border-sharp);
+  padding: 0.75rem;
+  margin-bottom: 0.5rem; /* Reduced gap for fieldsets within modal */
+  background-color: var(--bg-charcoal);
+}
+.modal-legend {
+  color: var(--accent-green);
+  font-size: 1rem;
+  padding: 0 0.3rem;
+  font-weight: bold;
+}
+.modal-input-group {
+  margin-bottom: 0.6rem; /* Space between input groups */
+}
+.modal-input-group:last-child {
+  margin-bottom: 0;
+}
+.modal-label {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-bottom: 0.2rem;
+}
+.modal-input, .modal-textarea, .modal-select { /* Shared style for modal inputs */
+  width: 100%;
+  padding: 0.5rem;
+  background-color: var(--bg-deep-charcoal);
+  color: var(--text-primary);
+  border: 1px solid var(--border-sharp);
+  font-family: inherit;
+  font-size: 0.9rem;
+  border-radius: 0;
+}
+.modal-input:focus, .modal-textarea:focus, .modal-select:focus {
+  border-color: var(--accent-cyan);
+  outline: none;
+  box-shadow: 0 0 3px var(--accent-cyan);
+}
+.modal-textarea {
+  resize: vertical;
+  min-height: 50px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  gap: 0.75rem; /* Space between buttons */
+  margin-top: 0.5rem; /* Add some space above actions */
+}
+
+.modal-button {
+  padding: 0.5rem 1rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 0;
+  transition: background-color 0.1s, color 0.1s;
+  border: 1px solid;
+}
+
+.modal-button-ok {
+  background-color: var(--accent-green);
+  color: var(--bg-deep-charcoal);
+  border-color: var(--accent-green);
+  font-weight: bold;
+}
+.modal-button-ok:hover {
+  background-color: #00dd30; /* Lighter green */
+}
+
+.modal-button-cancel {
+  background-color: transparent;
+  color: var(--accent-amber);
+  border-color: var(--accent-amber);
+}
+.modal-button-cancel:hover {
+  background-color: var(--accent-amber);
+  color: var(--bg-deep-charcoal);
+}
+
+/* --- Body System Tools Specific Styles --- */
+.tool-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.tool-menu-button {
+    background-color: var(--tool-button-bg);
+    border: 1px solid var(--tool-button-border);
+    color: var(--tool-button-text);
+    padding: 0.5rem 0.8rem;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9em;
+    text-align: center; /* Changed from left to center */
+    border-radius: 0;
+    width: 100%;
+}
+.tool-menu-button:hover {
+    background-color: var(--tool-button-hover-bg);
+    color: var(--tool-button-hover-text);
+}
+.tool-menu-button:disabled {
+    border-color: var(--psych-text-dim);
+    color: var(--psych-text-dim);
+    cursor: not-allowed;
+    opacity: 0.6;
+    background-color: transparent;
+}
+.tool-menu-button.back-button {
+    margin-top: 1rem; /* Space above back button */
+    text-align: center;
+    border-color: var(--accent-amber);
+    color: var(--accent-amber);
+}
+.tool-menu-button.back-button:hover {
+    background-color: var(--accent-amber);
+    color: var(--bg-deep-charcoal);
+}
+
+.tool-form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem; /* Space between elements in a tool form */
+    color: var(--tool-text);
+}
+.tool-form-container h4 {
+    color: var(--tool-highlight);
+    font-size: 1.1em;
+    margin-bottom: 0.2rem;
+    border-bottom: 1px solid var(--tool-border);
+    padding-bottom: 0.2rem;
+}
+.tool-description, .tool-disclaimer {
+    font-size: 0.85em;
+    color: var(--psych-text-dim); /* Consistent dim text */
+    margin-bottom: 0.3rem;
+}
+.tool-disclaimer { margin-top: 0.5rem; font-style: italic;}
+.tool-disclaimer strong { color: var(--accent-amber); } /* Highlight parts of disclaimer */
+
+.tool-input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.75rem;
+}
+/* Ensure generic UI components adapt to tool background if needed */
+.tool-form-container .ui-text-input,
+.tool-form-container .ui-select-input {
+    background-color: var(--bg-deep-charcoal); /* Darker input fields for contrast within tool area */
+    border-color: var(--tool-border);
+    color: var(--tool-text);
+}
+.tool-form-container .ui-radio-label { color: var(--tool-text); }
+.tool-form-container .ui-radio-button { border-color: var(--tool-text); }
+.tool-form-container .ui-radio-input:checked + .ui-radio-button::before { background-color: var(--tool-highlight); }
+
+
+.tool-action-button {
+    background-color: var(--tool-highlight);
+    color: var(--tool-bg);
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9em;
+    font-weight: bold;
+    border-radius: 0;
+    align-self: flex-start; /* Or center/flex-end as preferred */
+}
+.tool-action-button:hover {
+    background-color: var(--accent-green); /* Slightly different green from psych if needed */
+    filter: brightness(1.1);
+}
+.tool-action-button:disabled {
+    background-color: var(--psych-text-dim);
+    color: var(--bg-charcoal);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.tool-output-area {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    border: 1px dashed var(--tool-border);
+    background-color: var(--bg-charcoal); /* Slightly lighter than tool-bg for output */
+    color: var(--tool-text);
+    font-size: 0.9em;
+    min-height: 30px;
+}
+.tool-output-area strong { color: var(--accent-amber); }
+.tool-output-area .term-highlight { color: var(--tool-highlight); }
+.tool-output-area .term-highlight.error { color: var(--severity-critical); }
+
+
+/* GCS Specific Styles */
+.gcs-tool .gcs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem; /* Space between E, V, M columns */
+    margin-bottom: 0.5rem;
+}
+.gcs-category h5 {
+    color: var(--accent-cyan);
+    font-size: 1em;
+    margin-bottom: 0.3rem;
+}
+.gcs-tool .ui-radio-group { gap: 0.4rem; } /* Tighter spacing for GCS options */
+.gcs-total-score { text-align: center; font-size: 1.1em; padding: 0.6rem; }
+.gcs-severity-interpretation { font-size: 0.9em; color: var(--psych-text-dim); }
+
+/* ASCVD Specific Styles */
+.ascvd-tool .tool-input-grid .ui-select-container label,
+.ascvd-tool .tool-input-grid .ui-text-input { 
+    font-size: 0.85em; 
+}
+.ascvd-tool .tool-input-grid .ui-select-container,
+.ascvd-tool .tool-input-grid div { 
+    margin-bottom: 0.2rem; 
+}
+
+/* Heart Rate Zone Specific Styles */
+.hr-zone-tool .ui-text-input { margin-bottom: 0.5rem; }
+.hr-zone-tool .tool-output-area p { margin-bottom: 0.2rem; }
+
+/* Musculoskeletal - FRAX Specific */
+.frax-tool .tool-input-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Allow slightly wider inputs */
+    gap: 0.6rem;
+}
+.frax-tool .ui-text-input, .frax-tool .ui-select-input {
+    font-size: 0.85em; /* Slightly smaller for density */
+}
+/* Musculoskeletal - ROM Tracker Specific */
+.rom-tracker-tool .tool-input-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+.rom-recorded-list {
+    list-style-type: none;
+    padding-left: 0;
+    max-height: 150px; /* Limit height and make scrollable if needed */
+    overflow-y: auto;
+}
+.rom-recorded-item {
+    padding: 0.2rem 0.3rem;
+    border-bottom: 1px solid var(--tool-border);
+    font-size: 0.9em;
+}
+.rom-recorded-item:last-child { border-bottom: none; }
+.rom-timestamp { font-size: 0.8em; color: var(--psych-text-dim); margin-left: 0.5em; }
+
+/* --- Neural Network Psychosis Assessment (NNPA) Styles --- */
+.nnpa-container {
+    /* Container for the whole NNPA module */
+}
+
+.nnpa-domain {
+    margin-bottom: 1.5rem;
+    padding: 0.75rem;
+    border: 1px solid var(--psych-border);
+    background-color: var(--bg-charcoal); /* Slightly different bg for visual separation */
+}
+
+.nnpa-domain-title {
+    color: var(--psych-highlight); /* Use psych highlight for domain titles */
+    border-bottom: 1px solid var(--psych-highlight);
+    padding-bottom: 0.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.nnpa-domain-description {
+    font-size: 0.85em;
+    color: var(--psych-text-dim);
+    margin-bottom: 0.75rem;
+}
+
+.nnpa-subscale {
+    margin-bottom: 1rem;
+    padding-left: 0.5rem; /* Indent subscales slightly */
+    border-left: 2px solid var(--psych-text-dim);
+}
+
+.nnpa-subscale-title {
+    color: var(--psych-text); /* Standard psych text for subscale titles */
+    font-size: 1em; /* Slightly smaller than domain title */
+    margin-bottom: 0.2rem;
+}
+
+.nnpa-subscale-description {
+    font-size: 0.8em;
+    color: #00a0a0; /* A slightly brighter dim cyan for sub-scale descriptions */
+    margin-bottom: 0.3rem;
+}
+
+.nnpa-domain-actions,
+.nnpa-overall-actions {
+    margin-top: 0.5rem;
+    /* .psych-actions general styles will apply for alignment and border */
+}
+
+.nnpa-domain-error,
+.nnpa-overall-error {
+    color: var(--severity-critical);
+    border: 1px dashed var(--severity-critical);
+    padding: 0.4rem;
+    margin-top: 0.5rem;
+    font-size: 0.9em;
+}
+.nnpa-domain-error .term-highlight, /* Ensure error text within term-highlight is also red */
+.nnpa-overall-error .term-highlight {
+    color: var(--severity-critical);
+}
+
+
+.nnpa-domain-aisummary,
+.nnpa-overall-aisummary {
+    margin-top: 0.75rem;
+    padding: 0.5rem;
+    border: 1px dashed var(--psych-text-dim);
+    background-color: #05080a; /* Very dark bg for AI summary boxes */
+}
+.nnpa-domain-aisummary strong,
+.nnpa-overall-aisummary strong {
+    color: var(--accent-amber); /* Highlight "AI Summary:" labels */
+}
+
+.nnpa-overall-aisummary .psych-module-subtitle { /* Make sure overall summary title stands out */
+    color: var(--psych-highlight);
+    font-size: 1.1em;
+}
+.nnpa-overall-aisummary p {
+    margin-bottom: 0.3rem;
+}
+.nnpa-overall-aisummary pre.terminal-preformatted-text {
+    max-height: 250px; /* Allow more space for overall summary */
+    overflow-y: auto;
+}
